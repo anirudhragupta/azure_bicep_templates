@@ -12,3 +12,4 @@ resource stgAcc 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   }
 }
 
+output resourceID string = stgAcc.id

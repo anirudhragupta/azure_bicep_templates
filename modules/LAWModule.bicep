@@ -1,9 +1,6 @@
 //Parameters:
 //LA Workspace Parameters
-@allowed([
-  'canada central'
-])
-param location string = 'canada central'
+param lawLocation string = 'canada central'
 
 param name string
 
@@ -14,8 +11,10 @@ param retentionInDays int
 //LA Workspace
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
   name: name
-  location: location
+  location: lawLocation
   properties: {
     retentionInDays: retentionInDays
   }
 }
+
+output resourceID string = logAnalyticsWorkspace.id

@@ -65,7 +65,7 @@ param diagnostsicSettingName string
 @description('Full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs')
 param LAWorkspaceID string
 
-param storageAccounts_MPE_RID string = '/subscriptions/065893d5-c67d-4e9e-ab08-dcfa52dc3da8/resourceGroups/translab_training_datastore_01/providers/Microsoft.Storage/storageAccounts/adlstraining01'
+param storageAccounts_MPE_RID string
 
 //Resources:
 //ADX Cluster Resource
@@ -92,7 +92,6 @@ resource adxCluster 'Microsoft.Kusto/clusters@2022-12-29' = {
       minimum: minInstance
       version: 1
     }
-  
   }
 
   //ADX Database Resource
