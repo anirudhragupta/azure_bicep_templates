@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "leaderOrFollower": {
+            "value": "follower" 
+        },
+        "location": {
+            "value": "canada central"
+        },
+        "clusterName": {
+            "value": "nsptlabprdadxcemtvp"
+        },
+        "clusterSKU": {
+            "value": "Standard_E8ads_v5"
+        },
+        "clusterTier": {
+            "value": "Standard"
+        },
+        "optimizedAutoscale": {
+            "value": true
+        },
+        "maxInstance": {
+            "value": 3
+        },
+        "minInstance": {
+            "value": 2
+        },
+        "enableStreamingIngest": {
+            "value": false
+        },
+        "enablePurge": {
+            "value": false
+                },
+        "enableAutoStop": {
+            "value": true
+        },
+        "enableDiskEncryption": {
+            "value": true
+        },
+        "enableDoubleEncryption": {
+            "value": false
+        },
+        "publicNetworkAccess": {
+            "value": "Disabled"
+        },
+        "clusterIdentity": {
+            "value": "SystemAssigned"
+        },
+        "databaseName": {
+            "value": "adxtestdatabase"
+        },
+        "dbKind": {
+            "value": "ReadWrite"
+        }
+    }
+}
