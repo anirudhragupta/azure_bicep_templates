@@ -1,4 +1,7 @@
 # Bicep Templates for NSPI Deployments
 
-<sub>Author: Anirudhra Gupta</sub>
+`Author: Anirudhra Gupta`
 
+## Commands to Deploy Bicep Files
+
+### Azure PowerShell
