@@ -1,4 +1,4 @@
-# Bicep Templates for NSPI Deployments
+# Bicep Templates for Resource Deployments
 
 `Author: Anirudhra Gupta`
 
