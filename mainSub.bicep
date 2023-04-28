@@ -19,8 +19,8 @@ param retentionInDays int
 param networkRGName string
 
 param vNetName string
-param subnet1Name string = 'default'
-param subnet2Name string = 'PEP-Subnet'
+param subnet1Name string 
+param subnet2Name string
 
 //ADX Module Parameters
 param adxRGName string
@@ -52,7 +52,7 @@ param minInstance int
   'Basic'
   'Standard'
 ])
-param clusterTier string = 'Standard'
+param clusterTier string
 
 //ADX Cluster Properties Parameters
 param enableStreamingIngest bool
@@ -80,7 +80,7 @@ param databaseName string
 param dbKind string
 
 // Diagnostic Settings Parameter
-param diagnostsicSettingName string 
+param diagnostsicSettingName string
 
 @description('Full ARM resource ID')
 var LAWorkspace_RID = lawModule.outputs.resourceID
