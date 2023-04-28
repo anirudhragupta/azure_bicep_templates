@@ -2,17 +2,56 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "rglocation": {
+            "value": "canada central"
+        },
+        "resourceLocation": {
+            "value": "canada central"
+        },
+        "storageRGName": {
+            "value": "storage-test-rg"
+        },
+        "analyticsRGName": {
+            "value": "analytics-test-rg"
+        },
+        "adxRGName": {
+            "value": "adx-test-rg"
+        },
+        "networkRGName": {
+            "value": "network-test-rg"
+        },
+        "stgName": {
+            "value": "thisteststganitlab"
+        },
+        "stgKind": {
+            "value": "StorageV2"
+        },
+        "stgSku": {
+            "value": "Standard_LRS"
+        },
+        "LAWName": {
+            "value": "mytestlawtlab"
+        },
+        "retentionInDays": {
+            "value": 30
+        },
+        "vNetName": {
+            "value": "mytestvnet01"
+        },
+        "subnet1Name": {
+            "value": "Default"
+        },
+        "subnet2Name": {
+            "value": "PEP-Subnet"
+        },
         "leaderOrFollower": {
             "value": "follower" 
         },
-        "location": {
-            "value": "canada central"
-        },
         "clusterName": {
-            "value": "nsptlabprdadxcemtvp"
+            "value": "nsptlabprxcemtvp01"
         },
         "clusterSKU": {
-            "value": "Standard_E8ads_v5"
+            "value": "Standard_L8as_v3"
         },
         "clusterTier": {
             "value": "Standard"
@@ -48,10 +87,13 @@
             "value": "SystemAssigned"
         },
         "databaseName": {
-            "value": "adxtestdatabase"
+            "value": "mytestdatabase"
         },
         "dbKind": {
             "value": "ReadWrite"
+        },
+        "diagnostsicSettingName": {
+            "value": "diagnostic-law-adx"
         }
     }
 }

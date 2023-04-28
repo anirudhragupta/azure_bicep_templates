@@ -2,15 +2,15 @@
 //LA Workspace Parameters
 param lawLocation string = 'canada central'
 
-param name string
+param lawName string
 
 @maxValue(365)
-param retentionInDays int
+param retentionInDays int = 30
 
 //Resources:
 //LA Workspace
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
-  name: name
+  name: lawName
   location: lawLocation
   properties: {
     retentionInDays: retentionInDays

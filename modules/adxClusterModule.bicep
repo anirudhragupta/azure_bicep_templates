@@ -10,7 +10,7 @@ var dbCreate = (leaderOrFollower == 'leader')
 @allowed([
   'canada central'
 ])
-param location string
+param adxLocation string
 
 @description('Enter a globally unique name for the ADX cluster')
 @maxLength(22)
@@ -63,15 +63,15 @@ param dbKind string
 param diagnostsicSettingName string 
 
 @description('Full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs')
-param LAWorkspaceID string
+param LAWorkspace_RID string
 
-param storageAccounts_MPE_RID string
+param storageAccount_MPE_RID string
 
 //Resources:
 //ADX Cluster Resource
 resource adxCluster 'Microsoft.Kusto/clusters@2022-12-29' = {
   name: clusterName
-  location: location
+  location: adxLocation
   sku: {
     name: clusterSKU
     tier: clusterTier
@@ -97,7 +97,7 @@ resource adxCluster 'Microsoft.Kusto/clusters@2022-12-29' = {
   //ADX Database Resource
   resource database01 'databases@2022-12-29' = if (dbCreate)  {
     name: databaseName
-    location: location
+    location: adxLocation
     kind: dbKind
   }
 }
@@ -148,8 +148,8 @@ resource clusterLogsDiagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01
       categoryGroup: null
       enabled: true
     }
-    ]
-    workspaceId: LAWorkspaceID
+  ]
+  workspaceId: LAWorkspace_RID
   }
 }
 
@@ -158,7 +158,7 @@ resource stgManagedPE 'Microsoft.Kusto/Clusters/ManagedPrivateEndpoints@2022-12-
   parent: adxCluster
   name: 'test-pe-stg-acc-01'
   properties: {
-    privateLinkResourceId: storageAccounts_MPE_RID
+    privateLinkResourceId: storageAccount_MPE_RID
     groupId: 'blob'
     requestMessage: 'Please approve'
   }
