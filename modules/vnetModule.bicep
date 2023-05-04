@@ -1,7 +1,7 @@
 param vNetName string
 param vNetLocation string
-param subnet1Name string = 'default'
-param subnet2Name string = 'PEP-Subnet'
+param defaultSubnetName string = 'default'
+param pepSubnetName string = 'PEP-Subnet'
 
 resource vNet 'Microsoft.Network/virtualNetworks@2019-11-01' = {
   name: vNetName
@@ -12,19 +12,24 @@ resource vNet 'Microsoft.Network/virtualNetworks@2019-11-01' = {
         '10.0.0.0/16'
       ]
     }
-    subnets: [
-      {
-        name: subnet1Name
-        properties: {
-          addressPrefix: '10.0.0.0/24'
-        }
-      }
-      {
-        name: subnet2Name
-        properties: {
-          addressPrefix: '10.0.1.0/24'
-        }
-      }
-    ]
   }
 }
+
+resource defultSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' = {
+  parent: vNet
+  name: defaultSubnetName
+  properties: {
+    addressPrefix: '10.0.0.0/24'
+  }
+}
+
+resource pepSubnet 'Microsoft.Network/virtualNetworks/subnets@2022-09-01' = {
+  parent: vNet
+  name: pepSubnetName
+  properties: {
+    addressPrefix: '10.0.0.0/24'
+  }
+}
+
+output vnet_RID string = vNet.id
+output subnet_RID string = pepSubnet.id

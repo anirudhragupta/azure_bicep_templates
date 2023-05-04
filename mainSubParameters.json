@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "rglocation": {
-            "value": "canada central"
+            "value": "eastus"
         },
         "resourceLocation": {
-            "value": "canada central"
+            "value": "eastus"
         },
         "storageRGName": {
             "value": "storage-test-rg"
@@ -38,10 +38,10 @@
         "vNetName": {
             "value": "mytestvnet01"
         },
-        "subnet1Name": {
-            "value": "Default"
+        "defaultSubnetName": {
+            "value": "default"
         },
-        "subnet2Name": {
+        "pepSubnetName": {
             "value": "PEP-Subnet"
         },
         "leaderOrFollower": {
@@ -94,6 +94,15 @@
         },
         "diagnostsicSettingName": {
             "value": "diagnostic-law-adx"
+        },
+        "adxMPEName": {
+            "value": "stg-MPE"
+        },
+        "adxPEName": {
+            "value": "adx-test-pe"
+        },
+        "dnsGroupName": {
+            "value": "default-dns-group"
         }
     }
 }

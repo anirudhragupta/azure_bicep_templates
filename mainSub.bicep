@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
-param rglocation string = 'canada central'
-param resourceLocation string = 'canada central'
+param rglocation string
+param resourceLocation string
 
 //storage account module parameters
 param storageRGName string
@@ -17,10 +17,9 @@ param retentionInDays int
 
 //VNet Module Parameters
 param networkRGName string
-
 param vNetName string
-param subnet1Name string 
-param subnet2Name string
+param defaultSubnetName string 
+param pepSubnetName string
 
 //ADX Module Parameters
 param adxRGName string
@@ -40,19 +39,21 @@ param clusterName string
 @allowed([
   'Standard_L8as_v3' //Storage Optimized -- Leader Cluster
   'Standard_E8ads_v5' //Compute Optimized -- Follower Cluster
+  'Dev(No SLA)_Standard_D11_v2' //Dev
 ])
 param clusterSKU string 
-
-param optimizedAutoscale bool
-param maxInstance int
-@minValue(2)
-param minInstance int
 
 @allowed([
   'Basic'
   'Standard'
 ])
 param clusterTier string
+
+param optimizedAutoscale bool
+param maxInstance int
+@minValue(2)
+param minInstance int
+
 
 //ADX Cluster Properties Parameters
 param enableStreamingIngest bool
@@ -70,6 +71,7 @@ param publicNetworkAccess string
 ])
 param clusterIdentity string
 
+
 //Cluster Database Parameters
 param databaseName string
 
@@ -84,8 +86,14 @@ param diagnostsicSettingName string
 
 @description('Full ARM resource ID')
 var LAWorkspace_RID = lawModule.outputs.resourceID
+
+//ADX Managed PE
+param adxMPEName string 
 var storageAccount_MPE_RID = stgModule.outputs.resourceID
 
+//Private Endpoints parameters
+param adxPEName string
+param dnsGroupName string
 
 //Resources
 //Resource Groups:
@@ -109,13 +117,10 @@ resource networkRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: rglocation
 }
 
+
 //Resource Modules:
 //storage account
 module stgModule 'modules/stgAccModule.bicep' = {
-  // scope: resourceGroup(rg01.name)
-  // or 
-  // scope: resourceGroup(<subscriptionID>, <rgName>)
-  // scope: resourceGroup('mytestrg')
   scope: storageRG //symbolic name
   name: 'stgModule'
   params: {
@@ -137,15 +142,15 @@ module lawModule 'modules/LAWModule.bicep' = {
   }
 }
 
-//virtual networl
+//virtual network
 module vNetModule 'modules/vnetModule.bicep' = {
   scope: networkRG
   name: 'vNetModule'
   params:{
     vNetLocation: resourceLocation
     vNetName: vNetName
-    subnet1Name: subnet1Name
-    subnet2Name: subnet2Name
+    defaultSubnetName: defaultSubnetName
+    pepSubnetName: pepSubnetName
   }
 }
 
@@ -155,25 +160,36 @@ module adxModule 'modules/adxClusterModule.bicep' = {
   scope: adxRG
   name: clusterName
   params: {
+    leaderOrFollower: leaderOrFollower
+    //cluster resource
     adxLocation: resourceLocation
-    clusterIdentity: clusterIdentity
     clusterName: clusterName
     clusterSKU: clusterSKU
     clusterTier: clusterTier
+    //cluster database
     databaseName: databaseName
     dbKind: dbKind
-    diagnostsicSettingName: diagnostsicSettingName
+    //cluster configuration
+    clusterIdentity: clusterIdentity
     enableAutoStop: enableAutoStop
     enableDiskEncryption: enableDiskEncryption
     enableDoubleEncryption: enableDoubleEncryption
     enablePurge: enablePurge
     enableStreamingIngest: enableStreamingIngest
-    LAWorkspace_RID: LAWorkspace_RID
-    leaderOrFollower: leaderOrFollower
+    publicNetworkAccess: publicNetworkAccess
+    optimizedAutoscale: optimizedAutoscale
     maxInstance: maxInstance
     minInstance: minInstance
-    optimizedAutoscale: optimizedAutoscale
-    publicNetworkAccess: publicNetworkAccess
+    //diagnostic settings
+    diagnostsicSettingName: diagnostsicSettingName
+    LAWorkspace_RID: LAWorkspace_RID
+    //managed private endpoints
+    adxMPEName: adxMPEName
     storageAccount_MPE_RID: storageAccount_MPE_RID
+    //Private endpoint and private DNS
+    adxPEName:adxPEName
+    vnet_RID: vNetModule.outputs.vnet_RID
+    subnet_RID: vNetModule.outputs.subnet_RID
+    dnsGroupName: dnsGroupName
   }
 }

@@ -6,7 +6,6 @@ param subnetID string = '/subscriptions/0cfe2870-d256-4119-b0a3-16293ac11bdc/res
   'Standard_L8as_v3' //Storage Optimized -- Leader Cluster
   'Standard_E8ads_v5' //Compute Optimized -- Follower Cluster
   'Dev(No SLA)_Standard_D11_v2' //Dev
-
 ])
 param clusterSKU string 
 
@@ -142,7 +141,8 @@ resource tableDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks
 
 
 resource privateEndpointsDnsGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2022-09-01' = {
-  name: '${adxPE.name}/default'
+  name: 'pe-default'
+  parent: adxPE
   properties: {
     privateDnsZoneConfigs: [
       {

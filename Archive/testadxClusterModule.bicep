@@ -4,41 +4,41 @@
   'leader'
   'follower'
 ])
-param leaderOrFollower string
+param leaderOrFollower string = 'follower'
 var dbCreate = (leaderOrFollower == 'leader')
 
-param adxLocation string
+param adxLocation string = 'eastus'
 
 @description('Enter a globally unique name for the ADX cluster')
 @maxLength(22)
 @minLength(5)
-param clusterName string
+param clusterName string = 'mytstlabaidhrjt123'
 
 @allowed([
   'Standard_L8as_v3' //Storage Optimized -- Leader Cluster
   'Standard_E8ads_v5' //Compute Optimized -- Follower Cluster
   'Dev(No SLA)_Standard_D11_v2' //Dev
 ])
-param clusterSKU string 
+param clusterSKU string = 'Standard_L8as_v3'
 
-param optimizedAutoscale bool
-param maxInstance int
+param optimizedAutoscale bool = false 
+param maxInstance int = 3 
 @minValue(2)
-param minInstance int
+param minInstance int = 2
 
 @allowed([
   'Basic'
   'Standard'
 ])
-param clusterTier string
+param clusterTier string = 'Standard'
 
 //ADX Cluster Properties Parameters
-param enableStreamingIngest bool
-param enablePurge bool
-param enableAutoStop bool
-param enableDiskEncryption bool
-param enableDoubleEncryption bool
-param publicNetworkAccess string
+param enableStreamingIngest bool = false 
+param enablePurge bool = false
+param enableAutoStop bool = true
+param enableDiskEncryption bool = false
+param enableDoubleEncryption bool = false
+param publicNetworkAccess string = 'Disabled'
 
 @allowed([
   'SystemAssigned'
@@ -46,32 +46,32 @@ param publicNetworkAccess string
   'SystemAssigned, UserAssigned'
   'None'
 ])
-param clusterIdentity string
+param clusterIdentity string = 'SystemAssigned'
 
 //Cluster Database Parameters
-param databaseName string
+param databaseName string = 'mytestdb'
 
 @allowed([
   'ReadWrite'
   'ReadOnlyFollowing'
 ])
-param dbKind string
+param dbKind string = 'ReadWrite'
 
 // Diagnostic Settings Parameter
-param diagnostsicSettingName string 
+// param diagnostsicSettingName string 
 
-@description('Full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs')
-param LAWorkspace_RID string
+// @description('Full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs')
+// param LAWorkspace_RID string 
 
 //Managed Private Endpoint
-param storageAccount_MPE_RID string
-param adxMPEName string 
+// param storageAccount_MPE_RID string
+// param adxMPEName string 
 
 //Private Endpoints parameters
-param adxPEName string
-param dnsGroupName string
-param vnet_RID string
-param subnet_RID string
+param adxPEName string = 'adx-pe-test-01'
+param dnsGroupName string = 'adx-dns-group-01'
+param vnet_RID string = '/subscriptions/2213e8b1-dbc7-4d54-8aff-b5e315df5e5b/resourcegroups/1-c11a7dcd-playground-sandbox/providers/Microsoft.Network/virtualNetworks/vnet01'
+param subnet_RID string = '/subscriptions/2213e8b1-dbc7-4d54-8aff-b5e315df5e5b/resourcegroups/1-c11a7dcd-playground-sandbox/providers/Microsoft.Network/virtualNetworks/vnet01/subnets/default'
 
 
 //Resources:
@@ -109,67 +109,67 @@ resource adxCluster 'Microsoft.Kusto/clusters@2022-12-29' = {
   }
 }
 
-//Cluster Diagnostic Settings
-resource clusterLogsDiagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: diagnostsicSettingName
-  scope: adxCluster
-  properties: {
-    logs:[
-    {
-      category: 'SucceededIngestion'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'FailedIngestion'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'IngestionBatching'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'Command'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'Query'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'TableUsageStatistics'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'TableDetails'
-      categoryGroup: null
-      enabled: true
-    }
-    {
-      category: 'Journal'
-      categoryGroup: null
-      enabled: true
-    }
-  ]
-  workspaceId: LAWorkspace_RID
-  }
-}
+// //Cluster Diagnostic Settings
+// resource clusterLogsDiagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+//   name: diagnostsicSettingName
+//   scope: adxCluster
+//   properties: {
+//     logs:[
+//     {
+//       category: 'SucceededIngestion'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'FailedIngestion'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'IngestionBatching'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'Command'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'Query'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'TableUsageStatistics'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'TableDetails'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//     {
+//       category: 'Journal'
+//       categoryGroup: null
+//       enabled: true
+//     }
+//   ]
+//   workspaceId: LAWorkspace_RID
+//   }
+// }
 
-//Managed Private Endpoints
-resource stgManagedPE 'Microsoft.Kusto/Clusters/ManagedPrivateEndpoints@2022-12-29' = {
-  parent: adxCluster
-  name: adxMPEName
-  properties: {
-    privateLinkResourceId: storageAccount_MPE_RID
-    groupId: 'blob'
-    requestMessage: 'Please approve'
-  }
-}
+// //Managed Private Endpoints
+// resource stgManagedPE 'Microsoft.Kusto/Clusters/ManagedPrivateEndpoints@2022-12-29' = {
+//   parent: adxCluster
+//   name: adxMPEName
+//   properties: {
+//     privateLinkResourceId: storageAccount_MPE_RID
+//     groupId: 'blob'
+//     requestMessage: 'Please approve'
+//   }
+// }
 
 
 //ADX Cluster Private Endpoints and Private DNS
