@@ -2,11 +2,22 @@ param resLocation string = 'eastus'
 param vnetID string = '/subscriptions/0cfe2870-d256-4119-b0a3-16293ac11bdc/resourceGroups/1-e1215295-playground-sandbox/providers/Microsoft.Network/virtualNetworks/vnet01'
 param subnetID string = '/subscriptions/0cfe2870-d256-4119-b0a3-16293ac11bdc/resourceGroups/1-e1215295-playground-sandbox/providers/Microsoft.Network/virtualNetworks/vnet01/subnets/default'
 
+@allowed([
+  'Standard_L8as_v3' //Storage Optimized -- Leader Cluster
+  'Standard_E8ads_v5' //Compute Optimized -- Follower Cluster
+])
+param clusterSKU string 
+
+@description('Enter a globally unique name for the ADX cluster')
+@maxLength(22)
+@minLength(5)
+param clusterName string = 'mytestanirudhrastg123'
+
 resource adxCluster 'Microsoft.Kusto/clusters@2022-12-29' = {
-  name: 'mytestanirudhrastg123'
+  name: clusterName
   location: resLocation
   sku: {
-    name: 'Standard_E8ads_v5'
+    name: clusterSKU
     tier: 'Standard'
   }
   identity:{
